@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Expense Tracker</h2>
+        <input type="text" id="expenseName" placeholder="Expense Name">
+        <input type="number" id="expenseAmount" placeholder="Amount">
+        <select id="expenseCategory">
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+        </select>
+        <button onclick="addExpense()">Add Expense</button>
+        <h3>Total: $<span id="totalAmount">0</span></h3>
+        <ul id="expenseList"></ul>
+    </div>
+
+    <script>
+        let total = 0;
+        function addExpense() {
+            let name = document.getElementById("expenseName").value;
+            let amount = parseFloat(document.getElementById("expenseAmount").value);
+            let category = document.getElementById("expenseCategory").value;
+            
+            if (!name || isNaN(amount) || amount <= 0) {
+                alert("Please enter valid details.");
+                return;
+            }
+            
+            total += amount;
+            document.getElementById("totalAmount").innerText = total;
+            
+            let li = document.createElement("li");
+            li.innerHTML = `${name} ($${amount}) - ${category} <button class='delete' onclick='removeExpense(this, ${amount})'>X</button>`;
+            document.getElementById("expenseList").appendChild(li);
+            
+            document.getElementById("expenseName").value = "";
+            document.getElementById("expenseAmount").value = "";
+        }
+        
+        function removeExpense(button, amount) {
+            total -= amount;
+            document.getElementById("totalAmount").innerText = total;
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
